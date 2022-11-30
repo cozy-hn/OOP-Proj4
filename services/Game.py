@@ -1,41 +1,42 @@
-from models import Player, Dealer, Money
+from models import Player, Dealer
+import Round
+
 
 # 한 게임을 책임지는 클래스입니다.
 class Game:
-	def __init__(self):
-		self.rounds = []
-		self.winner = None
-		self.totalBet = None
-		self.dealer = None
-		self.players = []
+    def __init__(self):
+        self.rounds = []
+        self.winner = None
+        self.totalBet = None
+        self.dealer = None
+        self.players = []
 
-	def start_game(self):
-		self.dealer = Dealer()
-		
-		for i in range(4):
-			self.players.append(self.create_player())
+    def start_game(self):
+        self.dealer = Dealer()
 
-		while True:
-			if self.dealer.check_game_ended(self.players):
-				self.end_game()
+        for i in range(4):
+            self.players.append(self.create_player())
 
-			round = Round()
-			self.rounds.append(round)
+        while True:
+            if self.dealer.check_game_ended(self.players):
+                self.end_game()
 
-			round.start_round()
-				
+            round = Round()
+            self.rounds.append(round)
 
-	def end_game(self):
-		pass
+            round.start_round()
 
-	def create_player(self):
-		return Player()
-	
-	def show_oppenent_hands(self):
-		pass
+    def end_game(self):
+        pass
 
-	def display_player(self):
-		pass
+    def create_player(self):
+        return Player()
 
-	def display_hand(self):
-		pass
+    def show_opponent_hands(self):
+        pass
+
+    def display_player(self):
+        pass
+
+    def display_hand(self):
+        pass
