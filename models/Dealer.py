@@ -2,6 +2,8 @@
 from Rule import rule 
 
 class Dealer:
+    def __init__(self):
+        pass
     def Declare_winner():
         return 0
     def Distribute_Cards():
