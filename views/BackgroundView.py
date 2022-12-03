@@ -1,7 +1,7 @@
 from console.screen import sc
 import os
 from HandView import HandView
-from WordView import NumberView, WordView, NUM_HEIGHT, NUM_WIDTH
+from WordView import NumberView, WordView, NUM_HEIGHT, NUM_WIDTH, WORD_HEIGHT
 from PlayerView import PlayerView
 from StakeView import StakeView
 
@@ -42,9 +42,13 @@ class Background:
             NumberView().display_number(i, (HEIGHT - 35 + (i * (NUM_HEIGHT+2)), 130))
             WordView().display_word(word, (HEIGHT - 35 + (i * (NUM_HEIGHT+2)), 130 + (2 * NUM_WIDTH)))
 
-        #Draw Betting Menu
-        WordView().display_word("BETTING", (25, 1))
+        # Draw Total Bet
+        # WordView().display_word("BETTING", (25, 1))
         StakeView().display_stakes(0, (25, 110))
+
+        # Draw Betting Menu
+        WordView().display_word("BETTING", (1, 129))
+        StakeView().display_stakes(100000, (WORD_HEIGHT + 3, 129 + 6*NUM_WIDTH))
 
 #test
 screen = Background()
