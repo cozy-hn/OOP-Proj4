@@ -32,8 +32,9 @@ class TxtReader:
             "DIE": [],
             "EXIT": [],
             "PLAYER": [],
-            "COMPUTER": [],
-            "WON": []
+            "COM": [],
+            "WON": [],
+            "BETTING": []
         })
 
         for word in self.words.keys():
