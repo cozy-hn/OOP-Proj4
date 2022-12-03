@@ -1,18 +1,19 @@
 import sys, os
-from console import sc
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
 from services.TxtReader import TxtReader
+from console import sc
 
-PLAYER = [(32, 65), (32, 96)]
-COMPUTER = [(0, 65), (0, 96)]
+PLAYER = [(32, 66), (32, 96)]
+COMPUTER = [(0, 66), (0, 96)]
 CARD_HEIGHT = 23
 
+
 class HandView:
+
     def __init__(self) -> None:
         self.hands = TxtReader().read_hands()
 
-    def displayHand(self, player: int, hand: dict = (0, 0), front: bool = True):
+    def display_hand(self, player: int, hand: dict = (0, 0), front: bool = True):
         if player == 0:
             pos = PLAYER
         else:
