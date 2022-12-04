@@ -1,65 +1,78 @@
 from console.screen import sc
-import os
 from HandView import HandView
-from WordView import NumberView, WordView, NUM_HEIGHT, NUM_WIDTH, WORD_HEIGHT
+from WordView import *
+from NumberView import *
 from PlayerView import PlayerView
-from StakeView import StakeView
+from BettingView import BettingView
 
-WIDTH = 192
-HEIGHT = 56
+ROW_WINDOW = 192
+COL_WINDOW = 56
 
-class Background:
+BORDER_WIDTH = 63
+PLAYER_BORDER_HEIGHT = 23
+MENU_BORDER_HEIGHT = 35
+
+POS_PLAYER_BORDER_RIGHT = 63
+POS_MENU_BORDER_LEFT = 128
+POS_MENU = (COL_WINDOW - 35, 130)
+
+
+class Background(NumberView, WordView):
     def __init__(self):
-        os.system(f"mode {WIDTH},{HEIGHT}")
+        NumberView.__init__(self)
+        WordView.__init__(self)
+        os.system(f"mode {ROW_WINDOW},{COL_WINDOW}")
         os.system("color 0f")
         os.system("cls")
 
-        # Draw Player Box
-        for i in range(23):
-            with sc.location(i-1, 63):
+        self.__draw_player_box()
+        self.__draw_menu_box()
+
+    def __draw_player_box(self):
+        for i in range(PLAYER_BORDER_HEIGHT):
+            with sc.location(i-1, POS_PLAYER_BORDER_RIGHT):
                 print("|")
 
-            with sc.location(HEIGHT - (i+1), 63):
+            with sc.location(COL_WINDOW - (i+1), POS_PLAYER_BORDER_RIGHT):
                 print("|")
 
-        for i in range(63):
-            with sc.location(22, i):
+        for i in range(BORDER_WIDTH):
+            with sc.location(PLAYER_BORDER_HEIGHT - 1, i):
                 print("-")
 
-            with sc.location(HEIGHT - 24, i):
+            with sc.location(COL_WINDOW - (PLAYER_BORDER_HEIGHT + 1), i):
                 print("_")
 
-        # Draw Input Menu Box
-        for i in range(35):
-            with sc.location(HEIGHT - (i + 2), 128):
+    def __draw_menu_box(self):
+        for i in range(MENU_BORDER_HEIGHT):
+            with sc.location(COL_WINDOW - (i + 2), POS_MENU_BORDER_LEFT):
                 print("|")
 
-        for i in range(63):
-            with sc.location(HEIGHT - 36, 128 + i):
+        for i in range(BORDER_WIDTH):
+            with sc.location(COL_WINDOW - (MENU_BORDER_HEIGHT + 1), POS_MENU_BORDER_LEFT + i):
                 print("-")
 
         for i, word in enumerate(["EXIT", "CALL", "HALF", "DIE"]):
-            NumberView().display_number(i, (HEIGHT - 35 + (i * (NUM_HEIGHT+2)), 130))
-            WordView().display_word(word, (HEIGHT - 35 + (i * (NUM_HEIGHT+2)), 130 + (2 * NUM_WIDTH)))
+            self.display_number(i, (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1]))
+            self.display_word(word, (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1] + (2 * NUM_WIDTH)))
 
-        # Draw Total Bet
-        # WordView().display_word("BETTING", (25, 1))
-        StakeView().display_stakes(0, (25, 110))
+    def display_input(self, pos: tuple = (COL_WINDOW - (MENU_BORDER_HEIGHT + 2), POS_MENU_BORDER_LEFT)) -> int:
+        with sc.location(pos[0], pos[1]):
+            choice = input("CHOICE : ")
+        return choice
 
-        # Draw Betting Menu
-        WordView().display_word("BETTING", (1, 129))
-        StakeView().display_stakes(100000, (WORD_HEIGHT + 3, 129 + 6*NUM_WIDTH))
 
-#test
+# sample code
 screen = Background()
-HandView().display_hand(0, (3, 7))
-HandView().display_hand(1, front=False)
-PlayerView().display_player(0, 100000)
-PlayerView().display_player(1)
+hv = HandView()
+pv = PlayerView()
+bv = BettingView()
 
+hv.display_hand(0, (3, 7))
+hv.display_hand(1, front=False)
+pv.display_player(0, 100000)
+pv.display_player(1)
+bv.display_betting(10000)
+bv.display_total_betting(0)
 
-while True:
-    with sc.location(HEIGHT - 37, 128):
-        a = input("CHOICE : ")
-        if a:
-            break
+screen.display_input()
