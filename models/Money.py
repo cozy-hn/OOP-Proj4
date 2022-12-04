@@ -12,16 +12,16 @@ class Money:
         self.amount = amount
         self.currency = currency
 
-    def setAmount(self : int):
+    def set_amount(self : int):
         print("배팅할 금액을 얼마로 설정하시겠습니까? ")
         self.amount = input() 
 
-    def setCurrency(self : str):
+    def set_currency(self : str):
         print("화폐의 종류가 무엇인가요? ")
         self.currency = input() 
 
-    def getAmount(self):
+    def get_amount(self):
         return self.amount
 
-    def getCurrency(self):
+    def get_currency(self):
         return self.currency
