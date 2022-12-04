@@ -8,7 +8,7 @@ class Hand:
         #맴버변수 초기화
         self.hold = hold
 
-    def getValue(self):
+    def get_value(self):
         return self.hold
 
 
