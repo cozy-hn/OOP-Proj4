@@ -1,6 +1,6 @@
 # 한 라운드를 책임지는 클래스입니다.
-from models.Player import Player
-from models.Money import Money
+from ..models.Player import Player
+from ..models.Money import Money
 
 class Round:
     def __init__(self) -> None:

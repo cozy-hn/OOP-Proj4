@@ -1,7 +1,6 @@
 from models import Player, AutoPlayer, Dealer, Money
 import Round
 
-
 # 한 게임을 책임지는 클래스입니다.
 class Game:
     def __init__(self):
@@ -11,8 +10,12 @@ class Game:
         self.dealer: Dealer = None
         # 플레이어들 중 첫번째는 항상 컴퓨터입니다.
         self.players: list = []
+        # 패를 보여줄 뷰를 가집니다.
+        self.hand_view: HandView = HandView()
         
     def start_game(self) -> None:
+        # background 보여주고
+        #
         # 딜러를 초기화합니다.
         self.dealer = Dealer()
         # 플레이어의 베팅 금액을 입력받습니다.
@@ -41,7 +44,7 @@ class Game:
                 
             # 라운드가 시작하기 전에 패를 확인하고 죽을지 안죽을지를 결정합니다.
             # 이번 라운드에 참여할 플레이어의 목록을 결정합니다. 컴퓨터를 기본으로 추가합니다.
-            players_in = [self.players[0]]
+            players_in: [Player] = [self.players[0]]
             for i in range(1,len(self.players)):
                 # y/n로 죽을지 안죽을지 입력을 받습니다.
                 do_player_fold: str  = input()
@@ -50,7 +53,9 @@ class Game:
             
             # 참가가 모두 결정되면 라운드를 시작합니다. => 딜러가 승자를 판별하는게 낫겠습니다.
             round_winner: Player = self.dealer.announce_winner(players_in)
-            
+
+            # 라운드에 승자를 추가합니다.
+
             # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.
             self.rounds.append(game_round)
             
