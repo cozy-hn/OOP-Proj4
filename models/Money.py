@@ -1,13 +1,6 @@
 # 베팅 금액을 책임지는 클래스입니다.
 class Money:
-    def __init__(self, amount = None, currency = None):
-
-        # 입력하지 않은 경우(필요없는 경우 제거 요망)
-        if amount == None :
-            self.amount = 0
-        if currency == None : 
-            self.currency = " "
-
+    def __init__(self, amount: int = 0, currency: str = "won"):
         #맴버변수 초기화
         self.amount = amount
         self.currency = currency
@@ -17,6 +10,7 @@ class Money:
         self.amount = input() 
 
     def set_currency(self : str):
+        # 화폐 종류는 원으로 통일합시다!
         print("화폐의 종류가 무엇인가요? ")
         self.currency = input() 
 
