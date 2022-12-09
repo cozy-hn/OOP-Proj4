@@ -5,10 +5,23 @@ from random import randrange
 
 # 컴퓨터 플레이어가 자동으로 폴드, 벳을하게 해야하는데 이 로직을 정해야합니다.
 class AutoPlayer(Player):
-    def __init__(self, id: int, money: Money) -> None:
-        super().__init__(id, money)
+    def __init__(self, player_id: int = 0, initial_bet: Money = Money(10000)) -> None:
+        super().__init__(player_id, initial_bet)
 
-    def paly(self):
+    def auto_bet(self) -> Money:
+        # 랜덤하게 혹은 특정 로직에 의해 컴퓨터는 자동으로 베팅합니다.
+        # 랜덤으로 확률적으로
+        bet: Money = self.__decide_bet()
+        self.bet(bet)
+        return bet
+
+    def __decide_bet(self) -> Money:
+        # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
+        return Money(100)
+    def fold(self) -> None:
+        pass
+
+    def play(self):
         rannum=randrange(1,100)
         # hand 무엇을 받을지 확인 후 다시 수정예정
         # {1: '삼팔광땡', 2: '광땡', 3:'장땡', 4:'구땡', 5:'팔땡',

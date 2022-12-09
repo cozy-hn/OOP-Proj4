@@ -25,10 +25,8 @@ class Game:
         self.hand_view: HandView = HandView()
         self.background_view: BackgroundView = BackgroundView()
         self.betting_view: BettingView = BettingView()
-        self.number_view: NumberView = NumberView()
         self.player_view: PlayerView = PlayerView()
         self.stake_view: StakeView = StakeView()
-        self.word_view: WordView = WordView()
 
         # 딜러를 초기화합니다.
         self.dealer = Dealer()
