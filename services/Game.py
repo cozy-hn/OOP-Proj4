@@ -8,7 +8,6 @@ from ..views.NumberView import NumberView
 from ..views.StakeView import StakeView
 from ..views.WordView import WordView
 from ..views.PlayerView import PlayerView
-
 import Round
 
 # 한 게임을 책임지는 클래스입니다.
@@ -51,7 +50,7 @@ class Game:
         # 라운드마다 플레이어와 컴퓨터가 각자 베팅한 금액의 총합에 대한 정보가 어딘가 있어야한다.(라운드, 딜러)
         # -> 라운드로 합시다.
         # 첫 턴은 항상 플레이어입니다. game_turn이 True이면 플레이어 턴, False이면 컴퓨터 턴입니다.
-        game_turn: bool = True
+        game_turn: int = 1
         while not self.dealer.check_game_ended(self.player, self.computer_player):
             game_round: Round = Round(self.dealer, self.background_view)
             # 라운드가 생성되면 딜러가 패를 분배합니다.
@@ -62,17 +61,21 @@ class Game:
             self.hand_view.display_hand(self.player, self.player.get_hands(), front=True)
 
             # 라운드가 시작됩니다. 베팅이 반복됩니다.
-            game_round.start_round(game_turn, self.player, self.computer_player)
+            total_bet = game_round.start_round(game_turn, [self.player, self.computer_player])
 
             # 딜러가 승자를 판별합니다.
             round_winner: Player = self.dealer.announce_winner(self.player, self.computer_player)
 
             # 라운드에 승자를 추가합니다.
             # 라운드 승자와 얻은 금액을 입력합니다.
+            self.hand_view.display_hand(self.computer_player, self.computer_player.get_hands(), front=True)
             game_round.add_winner(round_winner)
             # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.
             # game_round를 카피해서 넣어야할 듯?
             self.rounds.append(game_round)
+            game_turn += 1
+            game_turn %= 2
+
             
         # 게임이 끝나면 승자와 최종 승리 금액을 출력합니다.
         winner: Player = self.player if self.player.get_stakes() > self.computer_player.get_stakes() else self.computer_player
