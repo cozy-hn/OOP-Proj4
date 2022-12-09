@@ -1,26 +1,29 @@
 # 컴퓨터 플레이어입니다. 플레이어로부터 파생됩니다. 
 from .Player import Player
-from .Money import Money
 from random import randrange
-
+from Player import Action
 # 컴퓨터 플레이어가 자동으로 폴드, 벳을하게 해야하는데 이 로직을 정해야합니다.
 class AutoPlayer(Player):
-    def __init__(self, player_id: int = 0, initial_bet: Money = Money(10000)) -> None:
+    def __init__(self, player_id: int = 0, initial_bet: int = int(10000)) -> None:
         super().__init__(player_id, initial_bet)
 
-    def auto_bet(self) -> Money:
+    def auto_bet(self) -> int:
         # 랜덤하게 혹은 특정 로직에 의해 컴퓨터는 자동으로 베팅합니다.
         # 랜덤으로 확률적으로
-        bet: Money = self.__decide_bet()
+        bet: int = self.__decide_bet()
         self.bet(bet)
         return bet
 
-    def __decide_bet(self) -> Money:
+    def __decide_bet(self) -> int:
         # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
-        return Money(100)
+        return int(100)
     def fold(self) -> None:
         pass
 
+    def auto_action(self) -> Action:
+        # 어떻게 계산
+        # Action: exit, die, call, half
+        return Action.DIE
     def play(self):
         rannum=randrange(1,100)
         # hand 무엇을 받을지 확인 후 다시 수정예정
