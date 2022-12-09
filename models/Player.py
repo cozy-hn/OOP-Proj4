@@ -1,17 +1,16 @@
 # 게임을 하는 플레이어입니다.
 # 컴퓨터 플레이어 클래스는 플레이어 클래스로부터 파생됩니다.
-from .Money import Money
 from .Hand import Hand
-from enum import  Enum
+from enum import Enum
 class Action(Enum):
     EXIT = 0
     DIE = 1
     CALL = 2
     HALF = 3
 class Player:
-    def __init__(self, player_id: int = 1, initial_bet: Money = Money(10000)) -> None:
-        self.__stakes: Money = initial_bet
-        self.__hands: [Hand] = []
+    def __init__(self, player_id: int = 1, initial_bet: int = 10000) -> None:
+        self.__stakes: int = initial_bet
+        self.__hand: [str] = []
         self.__player_id: int = id
         self.__available_actions = [action for action in Action]
         self.alive: bool = True
@@ -19,16 +18,17 @@ class Player:
         self.betsum: int = 0  # 배팅한 돈의 총액
         self.betfee: int = 0  # 자신의 턴에 배팅 할 돈
 
-    def bet(self, money: Money) -> None:
+    def bet(self, money: int) -> None:
         self.__stakes.substitute(money)
 
     def actions(self, first_turn: int = 0) -> [Action]:
         # 단 첫턴인 경우에는 콜 못합니다.
+        # 한번 콜하면 다시는 콜 못함
         if first_turn == self.__player_id:
             return self.__available_actions[:3]
         else:
             return self.__available_actions
-    def take(self, money: Money) -> None:
+    def take(self, money: int) -> None:
         self.__stakes.add(money)
     def fold(self) -> None:
         pass
