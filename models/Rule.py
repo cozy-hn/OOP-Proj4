@@ -1,8 +1,8 @@
 #섯다 족보 입니다.
-
 class Jokbo: 
 
     def __init__(self) -> None:
+        # 각 번호를 (1,3) 형식으로 뷰 함수 콜할 때 변환해야함
         self.jokbo_name = {1: '삼팔광땡', 2: '광땡', 3:'장땡', 4:'구땡', 5:'팔땡',
                   6: '칠땡', 7: '육땡', 8:'오땡', 9:'사땡', 10:'삼땡',
                   11: '이땡', 12: '일땡', 13:'알리', 14:'독사', 15:'구삥',
@@ -11,7 +11,7 @@ class Jokbo:
                   26: '두끗', 27: '한끗', 28: '망통'}
         self.jokbo  = ()
         
-    def create_jokbo()->dict:
+    def create_jokbo(self)->dict:
         jokbo = dict()
         jokbo['3,8'] = 1
         jokbo['1,3'] = 2
