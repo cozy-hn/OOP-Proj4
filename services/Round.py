@@ -13,7 +13,8 @@ class Round:
         self.winner = winner
     def start_round(self, first_turn: int, players: list) -> int:
         # 라운드가 시작되면 턴을 돌아가면서 베팅을합니다.
-        # 라운드가 끝나면 컴퓨터와 플레이어는 자신의 패를 공개하고 가장 높은 밸류를 가진 패가 이깁니다.
+        # 라운드가 끝나면 컴퓨터와 플레이어는 자신의 패를 공개하고
+        # 가장 높은 밸류를 가진 패가 이깁니다.
 
         # 매 라운드에서
         # 첫턴이 나라면 내가 콜은 못하고 다이나 하프
@@ -33,9 +34,8 @@ class Round:
         # 만약 콜 콜 -> 1. 베팅 금액이 같은 경우 2. 올인을 하는 경우
         # -> 승자 판별하고 승자에게 돈주고 라운드 종료
 
-        computer_stakes: int = players[0].getStakes()
-        player_stakes: int = players[1].getStakes()
-
+        computer_stakes: int = players[0].get_stakes()
+        player_stakes: int = players[1].get_stakes()
 
         bets: [int] = [self.default_bet, self.default_bet]
         all_set: bool = False
@@ -43,19 +43,22 @@ class Round:
         turn = first_turn
         available_actions: [Action] = [action for action in Action]
 
+        # 한 라운드를 시작하는 루프
         while not all_set:
             # 한 턴씩 진행합니다.
             # 둘 중에 하나가 죽으면 현재 라운드의 총 베팅 금액은 죽지않은쪽으로 갑니다.
-            # 둘중에 하나라도 게임을 종료하면 바로 함수를 종료합니다.
-            # 돈은 0원을 리턴합니다.
+            # 둘중에 하나라도 게임을 종료하면(exit) 바로 함수를 종료합니다.
 
-            actions1: Action = players[turn].actions(first_turn)
+            actions1: [Action] = players[turn].actions(first_turn)
             # 선택할 수 있는 액션만 보여줍니다.
+            # 디스플레이 함수에서는 [str]로 넘겨줍니다
             self.__action_view.display(actions1)
             # 플레이어만 액션을 입력받습니다.
-            action1 = -1
+            action1: int = -1
             if players[turn].get_id() == 1:
-                action1 = available_actions[int(input("Choose an Action"))]
+                # 입력을 받는 뷰
+                user_input = self.__action_view.display_input()
+                action1 = available_actions[int(user_input)]
             else:
                 action1 = players[turn].auto_action()
             turn = self.__take_action(action1, turn, players[turn], bets)
@@ -66,7 +69,8 @@ class Round:
             # 액션을 입력받습니다.
             actions2 = -1
             if players[turn].get_id() == 1:
-                action2 = available_actions[int(input("Choose an Action"))]
+                user_input = self.__action_view.display_input()
+                action2 = available_actions[int(user_input)]
             else:
                 action2 = players[turn].auto_action()
             turn = self.__take_action(action2, turn, players[turn], bets)
@@ -77,7 +81,7 @@ class Round:
         self.total_bet = sum(bets)
         return self.total_bet
 
-    def __is_round_end(self, action1: Action, action2 :Action):
+    def __is_round_end(self, action1: Action, action2: Action):
         is_round_end = False
         if action1 == Action.CALL and action2 == Action.CALL:
             is_round_end = True
@@ -89,19 +93,23 @@ class Round:
         if action == Action.EXIT:
             return int(0)
         elif action == Action.DIE:
+            # player.die() ?
             pass
         elif action == Action.CALL:
+            # player.call() ?
             if max(bets) > player.get_stakes():
                 # 가진 돈보다 콜 해야하는 금액이 많으면 올인합니다.
                 bets[turn] = player.get_stakes()
                 player.bet(player.get_stakes())
             else:
                 bets[turn] = max(bets)
+                # 돈 빼기
         elif action == Action.HALF:
+            # player.half() ?
             # 가진 돈보다 하프 해야하는 금액이 많으면 올인합니다.
             half_bet = max(bets) * 2 - player.get_stakes()
             if half_bet > player.get_stakes():
-                # 가진 돈보다 콜 해야하는 금액이 많으면 올인합니다.
+                # 가진 돈보다 하프 해야하는 금액이 많으면 올인합니다.
                 bets[turn] = player.get_stakes()
                 player.bet(player.get_stakes())
             else:
