@@ -1,6 +1,5 @@
 # 패를 나눠주는 딜러입니다.
 from .Hand import Hand
-from .Money import Money
 from .Player import Player
 from .Hand import Hand
 from services.Round import Round
@@ -27,17 +26,13 @@ class Dealer:
         # 퍼블릭 메소드를 이용해서 플레이어 내부의 멤버변 수 hands에 새로운 패를 넣어줍니다.
         temp_player_pae = list()
 
-        temp = list(itertools.combinations(range(1,21),2))
-        temp_card_combination = random.sample(sorted(temp),2)
+        temp = list(itertools.combinations(range(1, 21), 2))
+        temp_card_combination = random.sample(sorted(temp), 2)
 
-        for i in range(2):
-            temp.append(temp_card_combination[i])
-            temp_player_pae.append(str(temp[i]).replace('(','').replace(')','').replace(' ','').replace("'",''))
-            temp_player_pae[i] = temp_player_pae[i].split(',')
-            temp_player_pae[i] = list(map(int,temp_player_pae[i]))
-
-        player1.hands[0] = list(map(int, temp_player_pae[0].split(',')))
-        player2.hands[0] = list(map(int, temp_player_pae[1].split(',')))
+        player1.hands.clear()
+        player2.hands.clear()
+        player1.hands.extend(list(map(int, temp_card_combination[0])))
+        player2.hands.extend(list(map(int, temp_card_combination[1])))
 
 
     def check_game_ended(self, player: Player, computer_player: Player) -> bool:
