@@ -1,5 +1,5 @@
 # 패를 나눠주는 딜러입니다.
-# __init__.py
+from .Hand import Hand
 from .Money import Money
 from .Player import Player
 from .Hand import Hand
@@ -12,16 +12,14 @@ class Dealer:
     def __init__(self, deck: [Hand], table):
         self.deck: [Hand] = deck
         self.table = table
-
     def announce_winner(self, player1: Player, player2: Player) -> Player:
-
         player1_value = Rule.calc_rules(player1.hands[0],Rule.jokbo)
         player2_value = Rule.calc_rules(player2.hands[0],Rule.jokbo)
 
         if player1_value < player2_value:
             return player1
         elif player1_value > player2_value:
-            return player2 
+            return player2
         # 두 플레이어의 패를 비교해서 밸류가 높은 쪽이 승리합니다.
         # 무승부는 존재하지 않습니다.
     def distribute_cards(self, player1: Player, player2: Player) -> None:
@@ -37,18 +35,16 @@ class Dealer:
             temp_player_pae.append(str(temp[i]).replace('(','').replace(')','').replace(' ','').replace("'",''))
             temp_player_pae[i] = temp_player_pae[i].split(',')
             temp_player_pae[i] = list(map(int,temp_player_pae[i]))
-        
+
         player1.hands[0] = list(map(int, temp_player_pae[0].split(',')))
         player2.hands[0] = list(map(int, temp_player_pae[1].split(',')))
 
 
-    def check_game_ended(self, players: [Player]) -> bool:
+    def check_game_ended(self, player: Player, computer_player: Player) -> bool:
         is_game_ended = False
-        looser_count: int = 0
-        for i in range(len(players)):
-            if players[i].getStakes() == Money(0):
-                looser_count += 1
-        if looser_count == len(players)-1:
+        if player.getStakes() == 0:
+            is_game_ended = True
+        elif computer_player.getStakes() == 0:
             is_game_ended = True
         return is_game_ended
 
