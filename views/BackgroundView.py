@@ -1,10 +1,6 @@
 from console.screen import sc
-from HandView import HandView
 from WordView import *
 from NumberView import *
-from PlayerView import PlayerView
-from BettingView import BettingView
-from WinnerView import WinnerView
 
 ROW_WINDOW = 192
 COL_WINDOW = 56
@@ -26,14 +22,13 @@ MENU = {
 }
 
 
-class Background(NumberView, WordView):
+class BackgroundView(NumberView, WordView):
     def __init__(self):
         NumberView.__init__(self)
         WordView.__init__(self)
         os.system(f"mode {ROW_WINDOW},{COL_WINDOW}")
         os.system("color 0f")
         os.system("cls")
-
 
     def display_background(self):
         self.__draw_player_box()
@@ -50,12 +45,12 @@ class Background(NumberView, WordView):
         for i, num in enumerate(rounds_str):
             self.display_number(num, (POS_ROUNDS[0], POS_ROUNDS[1] + (i + 1) * NUM_WIDTH))
 
-
-    def display_input(self, pos: tuple = (COL_WINDOW - (MENU_BORDER_HEIGHT + 2), POS_MENU_BORDER_LEFT)) -> int:
+    def display_input(self) -> int:
+        pos = (COL_WINDOW - (MENU_BORDER_HEIGHT + 2), POS_MENU_BORDER_LEFT)
         while True:
             with sc.location(pos[0], pos[1]):
                 choice = input("CHOICE : ")
-                if choice >= "0" and choice <= "3":
+                if "0" <= choice <= "3":
                     return choice
                 else:
                     with sc.location(pos[0], pos[1]):
@@ -84,27 +79,3 @@ class Background(NumberView, WordView):
         for i in range(BORDER_WIDTH):
             with sc.location(COL_WINDOW - (MENU_BORDER_HEIGHT + 1), POS_MENU_BORDER_LEFT + i):
                 print("-")
-
-
-# sample code
-screen = Background()
-hv = HandView()
-pv = PlayerView()
-bv = BettingView()
-wv = WinnerView()
-
-
-screen.display_background()
-screen.display_menu()
-screen.display_rounds(1)
-
-hv.display_hand(0, (3, 7))
-hv.display_hand(1, front=False)
-pv.display_player(0, 100000)
-pv.display_player(1)
-bv.display_betting(10000)
-bv.display_total_betting(0)
-
-n = screen.display_input()
-
-wv.display_winner(0)
