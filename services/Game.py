@@ -3,14 +3,9 @@ import time
 from ..models.Player import Player
 from ..models.Dealer import Dealer
 from ..models.AutoPlayer import AutoPlayer
-from ..views.HandView import HandView
-from ..views.BettingView import BettingView
-from ..views.BackgroundView import Background
-from ..views.StakeView import StakeView
-from ..views.PlayerView import PlayerView
-from ..view.WinnerView import WinnerView
-import Round
+from .Round import Round
 from ..exceptions.Exit import Exit
+from ..views.ViewInterface import ViewInterface
 
 # 한 게임을 책임지는 클래스입니다.
 class Game:
@@ -23,18 +18,12 @@ class Game:
         self.computer_player = None
         self.player = None
         # 패를 보여줄 뷰를 가집니다.
-        self.hand_view: HandView = None
-        self.background_view: Background = None
-        self.betting_view: BettingView = None
-        self.player_view: PlayerView = None
-        self.stake_view: StakeView = None
-        self.winner_view: WinnerView = None
+        self.view_interface: ViewInterface = ViewInterface()
     def start_game(self) -> None:
-        self.hand_view: HandView = HandView()
-        self.background_view: Background = Background()
-        self.betting_view: BettingView = BettingView()
-        self.player_view: PlayerView = PlayerView()
-        self.stake_view: StakeView = StakeView()
+        # 초기 화면을 출력합니다.
+        self.view_interface.display_background()
+        self.view_interface.display_menu()
+        self.view_interface.display_rounds()
 
         # 딜러를 초기화합니다.
         self.dealer = Dealer()
@@ -65,7 +54,7 @@ class Game:
 
                 # 패가 분배되면 플레이어는 패를 확인합니다.
                 # 패는 콘솔창에 출력합니다.
-                self.hand_view.display_hand(self.player, self.player.get_hands(), front=True)
+                self.view_interface.display_hand(self.player, self.player.get_hand(), front=True)
 
                 # 라운드가 시작됩니다. 베팅이 반복됩니다.
                 game_round.start_round(game_turn, [self.player, self.computer_player])
