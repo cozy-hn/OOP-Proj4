@@ -9,8 +9,8 @@ class Player:
         self.__hand: [int] = []
         self.__player_id: int = 1
         self.__available_actions = [action for action in Action]
-        self.__actions_did_call = [Action(0), Action(1),Action(2)]
-        self.__actions_on_first_turn = self.__available_actions[:3]
+        self.__actions_did_call = [Action(0), Action(1), Action(2)]
+        self.__actions_on_first_turn = [Action(0), Action(1), Action(3)]
 
     def get_id(self) -> int:
         return self.__player_id

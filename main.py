@@ -7,7 +7,6 @@ def main():
     # exit when user input is 0
     game = Game()
     game.start_game()
-    print("This is the entry point")
     
     
 if __name__ == "__main__":

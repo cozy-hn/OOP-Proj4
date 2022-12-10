@@ -6,17 +6,19 @@ from exceptions.Die import Die
 from views.ViewInterface import ViewInterface
 
 class Round:
-    def __init__(self, default_bet: int, dealer, action_view: ViewInterface) -> None:
+    def __init__(self, default_bet: int, dealer, view_interface: ViewInterface) -> None:
         self.winner_id: int = -1
         self.dealer = dealer
         self.total_bet = 0
         self.default_bet = default_bet
-        self.bet_per_round: int = int(0)
-        self.__action_view: ViewInterface = action_view
+        self.bet_per_round: int = 0
+        self.__view_interface: ViewInterface = view_interface
         self.rounds_done: int = 0
         self.did_call: bool = False
+        
     def add_winner(self, winner: Player) -> None:
         self.winner = winner
+
     def start_round(self, first_turn: int, players: list) -> int:
         # 라운드가 시작되면 턴을 돌아가면서 베팅을합니다.
         # 라운드가 끝나면 컴퓨터와 플레이어는 자신의 패를 공개하고
@@ -43,11 +45,11 @@ class Round:
         computer_stakes: int = players[0].get_stakes()
         player_stakes: int = players[1].get_stakes()
 
-        bets: [int] = [self.default_bet, self.default_bet]
+        bets = [self.default_bet, self.default_bet]
         all_set: bool = False
         round_turn: int = 1
         turn = first_turn
-        available_actions: [Action] = [action for action in Action]
+        available_actions = [action for action in Action]
         self.did_call = [False, False]
         # 한 라운드를 시작하는 루프
         try:
@@ -55,32 +57,37 @@ class Round:
                 # 한 턴씩 진행합니다.
                 # 둘 중에 하나가 죽으면 현재 라운드의 총 베팅 금액은 죽지않은쪽으로 갑니다.
                 # 둘중에 하나라도 게임을 종료하면(exit) 바로 함수를 종료합니다.
-                actions1: [Action] = players[turn].actions(first_turn, self.did_call[turn])
+                actions1 = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
-                self.__action_view.display_menu([action.name for action in actions1])
+                self.__view_interface.display_menu([action.name for action in actions1])
+                
                 # 플레이어만 액션을 입력받습니다.
                 action1: Action = None
                 if players[turn].get_id() == 1:
-                    user_input = self.__action_view.display_input()
-                    action1 = available_actions[int(user_input)]
+                    user_input = self.__view_interface.display_input()
+                    action1 = available_actions[user_input]
                 else:
                     action1 = players[turn].auto_action()
                 turn = self.__take_action(action1, turn, players[turn], bets)
+                self.__view_interface.display_total_betting(sum(bets))
+                self.__view_interface.display_player(players[turn].get_id(), players[turn].get_stakes())
 
                 # 엑싯한 경우, 그냥 게임을 종료하고 게임의 승자는 상대편이 됩니다.
                 # 예외를 발생시키고 패자 메시지를 담습니다.
                 actions2: Action = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
-                self.__action_view.display_menu([action.name for action in actions2])
+                self.__view_interface.display_menu([action.name for action in actions2])
                 # 액션을 입력받습니다.
                 action2: Action = None
                 if players[turn].get_id() == 1:
-                    user_input = self.__action_view.display_input()
-                    action2 = available_actions[int(user_input)]
+                    user_input = self.__view_interface.display_input()
+                    action2 = available_actions[user_input]
                 else:
                     action2 = players[turn].auto_action()
                 turn = self.__take_action(action2, turn, players[turn], bets)
-
+                self.__view_interface.display_total_betting(sum(bets))
+                self.__view_interface.display_player(players[turn].get_id(), players[turn].get_stakes())
+                
                 if self.__is_round_end(action1, action2):
                     all_set = True
                 round_turn += 1
@@ -127,7 +134,8 @@ class Round:
             else:
                 bets[turn] += half_bet_amount
                 players[turn].bet(half_bet_amount)
-
+                
+        self.__view_interface.display_betting(bets[turn])
         turn += 1
         turn %= 2
         return turn

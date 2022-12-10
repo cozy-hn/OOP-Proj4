@@ -51,7 +51,7 @@ class BackgroundView(NumberView, WordView):
             with sc.location(pos[0], pos[1]):
                 choice = input("CHOICE : ")
                 if "0" <= choice <= "3":
-                    return choice
+                    return int(choice)
                 else:
                     with sc.location(pos[0], pos[1]):
                         print(" " * 50)

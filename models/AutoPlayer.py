@@ -11,7 +11,7 @@ class AutoPlayer(Player):
 
     def __decide_bet(self) -> int:
         # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
-        return int(100)
+        return 100
 
     def auto_action(self) -> Action:
         rannum=randrange(1,100)
