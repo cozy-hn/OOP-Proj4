@@ -6,6 +6,7 @@ from services.Round import Round
 import itertools
 import random
 import Rule
+import numpy as np 
 
 class Dealer:
     def __init__(self, deck: [Hand], table):
