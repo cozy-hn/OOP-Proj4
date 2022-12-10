@@ -7,9 +7,8 @@ import random
 import Rule
 
 class Dealer:
-    def __init__(self, deck: [Hand], table):
-        self.deck: [Hand] = deck
-        self.table = table
+    def __init__(self):
+        pass
     def announce_winner(self, player1: Player, player2: Player) -> Player:
         player1_value = Rule.calc_rules(player1.hands[0],Rule.jokbo)
         player2_value = Rule.calc_rules(player2.hands[0],Rule.jokbo)
