@@ -5,7 +5,7 @@ from .Action import Action
 class Player:
     def __init__(self, player_id: int = 1, initial_bet: int = 10000) -> None:
         self.__stakes: int = initial_bet
-        self.__hand: int = -1
+        self.__hand: [int] = []
         self.__player_id: int = player_id
         self.__available_actions = [action for action in Action]
         self.__actions_did_call = [Action(0), Action(1),Action(2)]
@@ -28,8 +28,8 @@ class Player:
         else:
             return self.__available_actions
 
-    def set_hand(self, hand: int) -> None:
+    def set_hand(self, hand: [int]) -> None:
         self.__hand = hand
 
-    def get_hands(self) -> list:
-        return self.__hand
+    def get_hand(self) -> list:
+        return dict(self.__hand)
