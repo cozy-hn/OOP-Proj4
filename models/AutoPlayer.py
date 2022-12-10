@@ -7,24 +7,11 @@ class AutoPlayer(Player):
     def __init__(self, player_id: int = 0, initial_bet: int = int(10000)) -> None:
         super().__init__(player_id, initial_bet)
 
-    def auto_bet(self) -> int:
-        # 랜덤하게 혹은 특정 로직에 의해 컴퓨터는 자동으로 베팅합니다.
-        # 랜덤으로 확률적으로
-        bet: int = self.__decide_bet()
-        self.bet(bet)
-        return bet
-
     def __decide_bet(self) -> int:
         # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
         return int(100)
-    def fold(self) -> None:
-        pass
 
     def auto_action(self) -> Action:
-        # 어떻게 계산
-        # Action: exit, die, call, half
-        return Action.DIE
-    def play(self):
         rannum=randrange(1,100)
         if self.hand in [1]:#삼팔 광땡
             if rannum in [i for i in range(1,2)]:

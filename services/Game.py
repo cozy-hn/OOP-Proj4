@@ -1,40 +1,29 @@
+import time
+
 from ..models.Player import Player
 from ..models.Dealer import Dealer
 from ..models.AutoPlayer import AutoPlayer
-from ..views.HandView import HandView
-from ..views.BettingView import BettingView
-from ..views.BackgroundView import Background
-from ..views.NumberView import NumberView
-from ..views.StakeView import StakeView
-from ..views.WordView import WordView
-from ..views.PlayerView import PlayerView
-import Round
+from .Round import Round
+from ..exceptions.Exit import Exit
+from ..views.ViewInterface import ViewInterface
 
 # 한 게임을 책임지는 클래스입니다.
 class Game:
     def __init__(self):
         self.rounds: list = []
         self.winner: Player = None
-        self.totalBet: int = None
+        self.totalBet: int = 0
         self.dealer: Dealer = None
         # 플레이어들 중 첫번째는 항상 컴퓨터입니다.
         self.computer_player = None
         self.player = None
         # 패를 보여줄 뷰를 가집니다.
-        self.hand_view: HandView = None
-        self.background_view: Background = None
-        self.betting_view: BettingView = None
-        self.number_view: NumberView = None
-        self.player_view: PlayerView = None
-        self.stake_view: StakeView = None
-        self.word_view: WordView = None
-
+        self.view_interface: ViewInterface = ViewInterface()
     def start_game(self) -> None:
-        self.hand_view: HandView = HandView()
-        self.background_view: Background = Background()
-        self.betting_view: BettingView = BettingView()
-        self.player_view: PlayerView = PlayerView()
-        self.stake_view: StakeView = StakeView()
+        # 초기 화면을 출력합니다.
+        self.view_interface.display_background()
+        self.view_interface.display_menu()
+        self.view_interface.display_rounds()
 
         # 딜러를 초기화합니다.
         self.dealer = Dealer()
@@ -51,38 +40,46 @@ class Game:
         # -> 라운드로 합시다.
         # 첫 턴은 항상 플레이어입니다. game_turn이 True이면 플레이어 턴, False이면 컴퓨터 턴입니다.
         game_turn: int = 1
-        while not self.dealer.check_game_ended(self.player, self.computer_player):
-            game_round: Round = Round(self.dealer, self.background_view)
-            # 라운드가 생성되면 딜러가 패를 분배합니다.
-            self.dealer.distrubute_hands(self.player, self.computer_player)
-            
-            # 패가 분배되면 플레이어는 패를 확인합니다.
-            # 패는 콘솔창에 출력합니다.
-            self.hand_view.display_hand(self.player, self.player.get_hands(), front=True)
+        try:
+            while not self.dealer.check_game_ended(self.player, self.computer_player):
+                # 기본 베팅 금액을 정합니다. 둘 다 천원이상 있으면 천원,
+                # 어느 한쪽이라도 돈이 모자라면 모자란쪽의 전 재산이 최소 베팅 금액이 됩니다.
+                if self.player.get_stakes() < 1000 or self.computer_player.get_stakes() < 1000:
+                    self.default_bet = min(self.player.get_stakes(), self.computer_player.get_stakes())
+                else:
+                    self.default_bet = 1000
+                game_round: Round = Round(self.default_bet, self.dealer, self.view_interface)
+                # 라운드가 생성되면 딜러가 패를 분배합니다.
+                self.dealer.distribute_cards(self.player, self.computer_player)
 
-            # 라운드가 시작됩니다. 베팅이 반복됩니다.
-            total_bet = game_round.start_round(game_turn, [self.player, self.computer_player])
+                # 패가 분배되면 플레이어는 패를 확인합니다.
+                # 패는 콘솔창에 출력합니다.
+                self.view_interface.display_hand(self.player, self.player.get_hand(), front=True)
 
-            # 딜러가 승자를 판별합니다.
-            round_winner: Player = self.dealer.announce_winner(self.player, self.computer_player)
+                # 라운드가 시작됩니다. 베팅이 반복됩니다.
+                game_round.start_round(game_turn, [self.player, self.computer_player])
 
-            # 라운드에 승자를 추가합니다.
-            # 라운드 승자와 얻은 금액을 입력합니다.
-            self.hand_view.display_hand(self.computer_player, self.computer_player.get_hands(), front=True)
-            game_round.add_winner(round_winner)
-            # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.
-            # game_round를 카피해서 넣어야할 듯?
-            self.rounds.append(game_round)
-            game_turn += 1
-            game_turn %= 2
+                # 딜러가 승자를 판별합니다.
+                round_winner: Player = self.dealer.announce_winner(self.player, self.computer_player)
 
-            
-        # 게임이 끝나면 승자와 최종 승리 금액을 출력합니다.
-        winner: Player = self.player if self.player.get_stakes() > self.computer_player.get_stakes() else self.computer_player
-        # 승자를 출력하는 뷰 만들어야할 듯
-        # 패의 족보? 값? 이걸 보여주는 뷰가 필요
-        # 같은 숫자의 패는 이미지 하나만
-        
+                # 라운드에 승자를 추가합니다.
+                # 라운드 승자와 얻은 금액을 입력합니다.
+                self.view_interface.display_hand(self.computer_player, self.computer_player.get_hand(), front=True)
+                game_round.add_winner(round_winner)
+                # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.
+                self.rounds.append(game_round)
+                game_turn += 1
+                game_turn %= 2
+                # 시간 간격을 둡니다. 3초 정도
+                time.sleep(3)
+            # 게임이 끝나면 승자를 판별합니다.
+            # 가진 돈이 더 많은 쪽이 승자입니다.
+            self.winner = self.player if self.player.get_stakes() > self.computer_player.get_stakes() else self.computer_player
+        except Exit:
+            self.winner = self.player if Exit.looser == 0 else self.computer_player
+        finally:
+            # 게임이 끝나면 승자와 최종 승리 금액을 출력합니다.
+            self.view_interface.display_winner(self.winner.get_id())
     def end_game(self) -> None:
         self.is_game_ended = True
 
