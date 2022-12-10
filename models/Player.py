@@ -11,6 +11,18 @@ class Player:
     def __init__(self, player_id: int = 1, initial_bet: int = 10000) -> None:
         self.__stakes: int = initial_bet
         self.__hand: [str] = []
+<<<<<<< HEAD
+        self.__player_id: int = player_id
+        self.__available_actions = [action for action in Action]
+
+
+    def bet(self, money: int) -> None:
+        self.__stakes-=money
+
+    def take(self, money: int) -> None:
+        self.__stakes+=money
+        
+=======
         self.__player_id: int = id
         self.__available_actions = [action for action in Action]
         self.alive: bool = True
@@ -21,6 +33,7 @@ class Player:
     def bet(self, money: int) -> None:
         self.__stakes.substitute(money)
 
+>>>>>>> e4934b8817871bebc191dc1ed3aa680706cb6671
     def actions(self, first_turn: int = 0) -> [Action]:
         # 단 첫턴인 경우에는 콜 못합니다.
         # 한번 콜하면 다시는 콜 못함
@@ -28,8 +41,11 @@ class Player:
             return self.__available_actions[:3]
         else:
             return self.__available_actions
+<<<<<<< HEAD
+=======
     def take(self, money: int) -> None:
         self.__stakes.add(money)
+>>>>>>> e4934b8817871bebc191dc1ed3aa680706cb6671
     def fold(self) -> None:
         pass
 
@@ -39,6 +55,22 @@ class Player:
     def game_in(self) -> None:
         pass
 
+<<<<<<< HEAD
+    def set_hand(self, hands: [Hand]) -> None:
+        self.__hand.clear()
+        self.__hand.extend(hands)
+
+    def get_id(self) -> int:
+        return self.__player_id
+
+    def get_hands(self) -> list:
+        return self.__hand
+    
+    def get_stakes(self)->int:
+        return self.__stakes
+
+
+=======
     def getbetsum(self)->int:
         return self.betsum
 
@@ -122,3 +154,4 @@ class Player:
     #         self.alive=False
     #     self.betsum+=self.betfee
     #     self.money-=self.betfee
+>>>>>>> e4934b8817871bebc191dc1ed3aa680706cb6671
