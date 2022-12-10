@@ -15,7 +15,7 @@ class Jokbo:
         jokbo = dict()
         jokbo['3,8'] = 1
         jokbo['1,3'] = 2
-        jokbo['1,8'] = 2                    
+        jokbo['1,8'] = 2
         j = 3
         temp_index = list()
         for i in range(1, 11):
@@ -24,7 +24,7 @@ class Jokbo:
         for i in temp_index:
             tmp = str(i) + ',' + str(i+10)
             jokbo[tmp] = j
-            j+=1                    
+            j+=1
         jokbo['1,2,'] = j
         j+=1
         jokbo['1,4,'] = j

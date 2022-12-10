@@ -4,6 +4,7 @@ from WordView import *
 from NumberView import *
 from PlayerView import PlayerView
 from BettingView import BettingView
+from WinnerView import WinnerView
 
 ROW_WINDOW = 192
 COL_WINDOW = 56
@@ -15,6 +16,14 @@ MENU_BORDER_HEIGHT = 35
 POS_PLAYER_BORDER_RIGHT = 63
 POS_MENU_BORDER_LEFT = 128
 POS_MENU = (COL_WINDOW - 35, 130)
+POS_ROUNDS = (25, 1)
+
+MENU = {
+    "EXIT": 0,
+    "DIE": 1,
+    "CALL": 2,
+    "HALF": 3
+}
 
 
 class Background(NumberView, WordView):
@@ -25,8 +34,32 @@ class Background(NumberView, WordView):
         os.system("color 0f")
         os.system("cls")
 
+
+    def display_background(self):
         self.__draw_player_box()
         self.__draw_menu_box()
+
+    def display_menu(self, actions: [str] = ("EXIT", "DIE", "CALL", "HALF")):
+        for i, word in enumerate(actions):
+            self.display_number(MENU[word], (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1]))
+            self.display_word(word, (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1] + (2 * NUM_WIDTH)))
+
+    def display_rounds(self, rounds: int = 1):
+        rounds_str = str(rounds)
+        self.display_word("R", POS_ROUNDS)
+        for i, num in enumerate(rounds_str):
+            self.display_number(num, (POS_ROUNDS[0], POS_ROUNDS[1] + (i + 1) * NUM_WIDTH))
+
+
+    def display_input(self, pos: tuple = (COL_WINDOW - (MENU_BORDER_HEIGHT + 2), POS_MENU_BORDER_LEFT)) -> int:
+        while True:
+            with sc.location(pos[0], pos[1]):
+                choice = input("CHOICE : ")
+                if choice >= "0" and choice <= "3":
+                    return choice
+                else:
+                    with sc.location(pos[0], pos[1]):
+                        print(" " * 50)
 
     def __draw_player_box(self):
         for i in range(PLAYER_BORDER_HEIGHT):
@@ -52,21 +85,18 @@ class Background(NumberView, WordView):
             with sc.location(COL_WINDOW - (MENU_BORDER_HEIGHT + 1), POS_MENU_BORDER_LEFT + i):
                 print("-")
 
-        for i, word in enumerate(["EXIT", "CALL", "HALF", "DIE"]):
-            self.display_number(i, (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1]))
-            self.display_word(word, (POS_MENU[0] + (i * (NUM_HEIGHT+2)), POS_MENU[1] + (2 * NUM_WIDTH)))
-
-    def display_input(self, pos: tuple = (COL_WINDOW - (MENU_BORDER_HEIGHT + 2), POS_MENU_BORDER_LEFT)) -> int:
-        with sc.location(pos[0], pos[1]):
-            choice = input("CHOICE : ")
-        return choice
-
 
 # sample code
 screen = Background()
 hv = HandView()
 pv = PlayerView()
 bv = BettingView()
+wv = WinnerView()
+
+
+screen.display_background()
+screen.display_menu()
+screen.display_rounds(1)
 
 hv.display_hand(0, (3, 7))
 hv.display_hand(1, front=False)
@@ -75,4 +105,6 @@ pv.display_player(1)
 bv.display_betting(10000)
 bv.display_total_betting(0)
 
-screen.display_input()
+n = screen.display_input()
+
+wv.display_winner(0)
