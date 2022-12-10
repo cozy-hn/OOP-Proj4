@@ -53,9 +53,9 @@ class Round:
                 # 둘중에 하나라도 게임을 종료하면(exit) 바로 함수를 종료합니다.
                 actions1: [Action] = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
-                self.__action_view.display([action.name for action in action1])
+                self.__action_view.display([action.name for action in actions1])
                 # 플레이어만 액션을 입력받습니다.
-                action1: int = -1
+                action1: Action = None
                 if players[turn].get_id() == 1:
                     user_input = self.__action_view.display_input()
                     action1 = available_actions[int(user_input)]
@@ -69,7 +69,7 @@ class Round:
                 # 선택할 수 있는 액션만 보여줍니다.
                 self.__action_view.display([action.name for action in actions2])
                 # 액션을 입력받습니다.
-                actions2 = -1
+                action2: Action = None
                 if players[turn].get_id() == 1:
                     user_input = self.__action_view.display_input()
                     action2 = available_actions[int(user_input)]
