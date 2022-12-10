@@ -2,15 +2,18 @@
 from ..models.Player import Player, Action
 from ..exceptions.Exit import Exit
 from ..exceptions.Die import Die
+from ..views.ViewInterface import ViewInterface
+
 class Round:
-    def __init__(self, default_bet: int, dealer, action_view) -> None:
+    def __init__(self, default_bet: int, dealer, action_view: ViewInterface) -> None:
         self.winner_id: int = -1
         self.dealer = dealer
         self.total_bet = 0
         self.default_bet = default_bet
         self.bet_per_round: int = int(0)
-        self.__action_view = action_view
+        self.__action_view: ViewInterface = action_view
         self.rounds_done: int = 0
+        self.did_call: bool = False
     def add_winner(self, winner: Player) -> None:
         self.winner = winner
     def start_round(self, first_turn: int, players: list) -> int:
@@ -53,7 +56,7 @@ class Round:
                 # 둘중에 하나라도 게임을 종료하면(exit) 바로 함수를 종료합니다.
                 actions1: [Action] = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
-                self.__action_view.display([action.name for action in actions1])
+                self.__action_view.display_menu([action.name for action in actions1])
                 # 플레이어만 액션을 입력받습니다.
                 action1: Action = None
                 if players[turn].get_id() == 1:
@@ -67,7 +70,7 @@ class Round:
                 # 예외를 발생시키고 패자 메시지를 담습니다.
                 actions2: Action = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
-                self.__action_view.display([action.name for action in actions2])
+                self.__action_view.display_menu([action.name for action in actions2])
                 # 액션을 입력받습니다.
                 action2: Action = None
                 if players[turn].get_id() == 1:
