@@ -1,5 +1,5 @@
-from WordView import *
-from StakeView import StakeView
+from views.WordView import *
+from views.StakeView import StakeView
 
 POS_PLAYER = (34, 1)
 POS_COMPUTER = (1, 1)

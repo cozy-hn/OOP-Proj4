@@ -1,8 +1,9 @@
 # 한 라운드를 책임지는 클래스입니다.
-from ..models.Player import Player, Action
-from ..exceptions.Exit import Exit
-from ..exceptions.Die import Die
-from ..views.ViewInterface import ViewInterface
+from models.Action import Action
+from models.Player import Player
+from exceptions.Exit import Exit
+from exceptions.Die import Die
+from views.ViewInterface import ViewInterface
 
 class Round:
     def __init__(self, default_bet: int, dealer, action_view: ViewInterface) -> None:

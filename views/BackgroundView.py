@@ -1,6 +1,6 @@
 from console.screen import sc
-from WordView import *
-from NumberView import *
+from views.WordView import *
+from views.NumberView import *
 
 ROW_WINDOW = 192
 COL_WINDOW = 56

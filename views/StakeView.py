@@ -1,5 +1,5 @@
-from WordView import *
-from NumberView import *
+from views.WordView import *
+from views.NumberView import *
 
 class StakeView(NumberView, WordView):
 

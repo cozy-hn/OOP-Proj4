@@ -1,10 +1,10 @@
 # 패를 나눠주는 딜러입니다.
-from .Hand import Hand
-from .Player import Player
-from .Hand import Hand
+from models.Hand import Hand
+from models.Player import Player
+from models.Hand import Hand
 import itertools
 import random
-import Rule
+from models.Rule import Jokbo as Rule
 
 class Dealer:
     def __init__(self):
@@ -32,9 +32,9 @@ class Dealer:
 
     def check_game_ended(self, player: Player, computer_player: Player) -> bool:
         is_game_ended = False
-        if player.getStakes() == 0:
+        if player.get_stakes() == 0:
             is_game_ended = True
-        elif computer_player.getStakes() == 0:
+        elif computer_player.get_stakes() == 0:
             is_game_ended = True
         return is_game_ended
 

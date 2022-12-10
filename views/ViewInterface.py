@@ -1,8 +1,8 @@
-from BackgroundView import BackgroundView
-from HandView import HandView
-from PlayerView import PlayerView
-from BettingView import BettingView
-from WinnerView import WinnerView
+from views.BackgroundView import BackgroundView
+from views.HandView import HandView
+from views.PlayerView import PlayerView
+from views.BettingView import BettingView
+from views.WinnerView import WinnerView
 
 class ViewInterface:
 
@@ -42,19 +42,3 @@ class ViewInterface:
 
 
 #sample code
-screen = ViewInterface()
-
-screen.display_background()
-screen.display_menu()
-screen.display_rounds(1)
-
-screen.display_hand(0, (3, 7))
-screen.display_hand(1, front=False)
-screen.display_player(0, 100000)
-screen.display_player(1)
-screen.display_betting(10000)
-screen.display_total_betting(0)
-
-n = screen.display_input()
-
-screen.display_winner(0)
