@@ -1,5 +1,3 @@
 class Die(Exception):
-	looser = None
-	def __init__(self, looser, args):
-		super().__init__(args)
+	def __init__(self, looser):
 		self.looser = looser
