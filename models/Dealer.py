@@ -34,8 +34,8 @@ class Dealer:
         for i in range(2,4):
             hand2.append(temp_numbers_list[i])
 
-        player1.set_hands(hand1)
-        player2.set_hands(hand2)
+        player1.set_hand(hand1)
+        player2.set_hand(hand2)
 
     def check_game_ended(self, player: Player, computer_player: Player) -> bool:
         is_game_ended = False

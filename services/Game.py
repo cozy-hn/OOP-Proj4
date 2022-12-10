@@ -33,8 +33,11 @@ class Game:
         self.player = Player(10000)
         self.computer_player = AutoPlayer(10000)
 
-        self.view_interface.display_player(self.player, self.player.get_stakes())
-        self.view_interface.display_player(self.computer_player, self.computer_player.get_stakes())
+        self.view_interface.display_player(self.player.get_id(), self.player.get_stakes())
+        self.view_interface.display_player(self.computer_player.get_id(), self.computer_player.get_stakes())
+
+        self.view_interface.display_betting(0)
+        self.view_interface.display_total_betting(0)
 
         # 게임이 끝나지 않았으면 게임을 계속합니다.
         # 매번 한 라운드를 생성합니다.
@@ -60,8 +63,8 @@ class Game:
 
                 # 패가 분배되면 플레이어는 패를 확인합니다.
                 # 패는 콘솔창에 출력합니다.
-                self.view_interface.display_hand(self.player, self.player.get_hand(), front=True)
-                self.view_interface.display_hand(self.computer_player, self.computer_player.get_hand(), front=True)
+                self.view_interface.display_hand(self.player.get_id(), self.player.get_hand(), front=True)
+                self.view_interface.display_hand(self.computer_player.get_id(), self.computer_player.get_hand(), front=True)
                 
                 # 라운드가 시작됩니다. 베팅이 반복됩니다.
                 self.view_interface.display_player(self.player.get_id(), self.player.get_stakes())
@@ -73,7 +76,7 @@ class Game:
 
                 # 라운드에 승자를 추가합니다.
                 # 라운드 승자와 얻은 금액을 입력합니다.
-                self.view_interface.display_hand(self.computer_player, self.computer_player.get_hand(), front=True)
+                self.view_interface.display_hand(self.computer_player.get_id(), self.computer_player.get_hand(), front=True)
                 game_round.add_winner(round_winner)
                 rounds += 1
                 # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.

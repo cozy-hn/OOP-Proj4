@@ -7,7 +7,7 @@ class Player:
     def __init__(self, initial_stakes: int = 10000) -> None:
         self.__stakes: int = initial_stakes
         self.__hand: [int] = []
-        self.__player_id: int = 1
+        self.__player_id: int = 0
         self.__available_actions = [action for action in Action]
         self.__actions_did_call = [Action(0), Action(1), Action(2)]
         self.__actions_on_first_turn = [Action(0), Action(1), Action(3)]

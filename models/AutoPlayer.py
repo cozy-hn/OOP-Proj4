@@ -7,7 +7,7 @@ from models.Action import Action
 class AutoPlayer(Player):
     def __init__(self, initial_stakes: int = 10000) -> None:
         Player.__init__(self, initial_stakes)
-        self.__player_id = 0
+        self.__player_id = 1
 
     def __decide_bet(self) -> int:
         # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
@@ -71,3 +71,7 @@ class AutoPlayer(Player):
                 return Action.CALL
             else:
                 return Action.HALF
+
+
+    def get_id(self):
+        return self.__player_id

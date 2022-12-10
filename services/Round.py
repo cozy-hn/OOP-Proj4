@@ -60,10 +60,10 @@ class Round:
                 actions1 = players[turn].actions(first_turn, self.did_call[turn])
                 # 선택할 수 있는 액션만 보여줍니다.
                 self.__view_interface.display_menu([action.name for action in actions1])
-                
+
                 # 플레이어만 액션을 입력받습니다.
                 action1: Action = None
-                if players[turn].get_id() == 1:
+                if players[turn].get_id() == 0:
                     user_input = self.__view_interface.display_input()
                     action1 = available_actions[user_input]
                 else:
@@ -79,7 +79,7 @@ class Round:
                 self.__view_interface.display_menu([action.name for action in actions2])
                 # 액션을 입력받습니다.
                 action2: Action = None
-                if players[turn].get_id() == 1:
+                if players[turn].get_id() == 0:
                     user_input = self.__view_interface.display_input()
                     action2 = available_actions[user_input]
                 else:
@@ -108,32 +108,32 @@ class Round:
             is_round_end = True
         return is_round_end
 
-    def __take_action(self, action: Action, turn: int, players: [Player], bets: [int]) -> int:
+    def __take_action(self, action: Action, turn: int, player: Player, bets: [int]) -> int:
         if action == Action.EXIT:
             self.total_bet = sum(bets)
-            raise Exit(looser=players[turn].get_id())
+            raise Exit(looser=player.get_id())
         elif action == Action.DIE:
-            raise Die(looser=players[turn].get_id())
+            raise Die(looser=player.get_id())
         elif action == Action.CALL:
             self.did_call[turn] = True
-            if max(bets) > players[turn].get_stakes():
+            if max(bets) > player.get_stakes():
                 # 가진 돈보다 콜 해야하는 금액이 많으면 올인합니다.
-                bets[turn] += players[turn].get_stakes()
-                players[turn].bet(players[turn].get_stakes())
+                bets[turn] += player.get_stakes()
+                player.bet(player.get_stakes())
             else:
                 bet_amount = max(bets) - bets[turn]
                 bets[turn] = max(bets)
-                players[turn].bet(bet_amount)
+                player.bet(bet_amount)
         elif action == Action.HALF:
             # 가진 돈보다 하프 해야하는 금액이 많으면 올인합니다.
-            half_bet_amount = max(bets) * 3 - players[turn].get_stakes()
-            if half_bet_amount > players[turn].get_stakes():
+            half_bet_amount = max(bets) * 3 - player.get_stakes()
+            if half_bet_amount > player.get_stakes():
                 # 가진 돈보다 하프 해야하는 금액이 많으면 올인합니다.
-                bets[turn] = players[turn].get_stakes()
-                players[turn].bet(players[turn].get_stakes())
+                bets[turn] = player.get_stakes()
+                player.bet(player.get_stakes())
             else:
                 bets[turn] += half_bet_amount
-                players[turn].bet(half_bet_amount)
+                player.bet(half_bet_amount)
                 
         self.__view_interface.display_betting(bets[turn])
         turn += 1

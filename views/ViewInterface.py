@@ -23,7 +23,7 @@ class ViewInterface:
         self.__bg.display_rounds(rounds)
 
     def display_input(self) -> int:
-        self.__bg.display_input()
+        return self.__bg.display_input()
 
     def display_hand(self, player: int, hand: dict = (0, 0), front: bool = True):
         self.__hv.display_hand(player, hand, front)
