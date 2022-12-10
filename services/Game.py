@@ -12,7 +12,7 @@ class Game:
     def __init__(self):
         self.rounds: list = []
         self.winner: Player = None
-        self.totalBet: int = None
+        self.totalBet: int = 0
         self.dealer: Dealer = None
         # 플레이어들 중 첫번째는 항상 컴퓨터입니다.
         self.computer_player = None
@@ -48,9 +48,9 @@ class Game:
                     self.default_bet = min(self.player.get_stakes(), self.computer_player.get_stakes())
                 else:
                     self.default_bet = 1000
-                game_round: Round = Round(self.default_bet, self.dealer, self.background_view)
+                game_round: Round = Round(self.default_bet, self.dealer, self.view_interface)
                 # 라운드가 생성되면 딜러가 패를 분배합니다.
-                self.dealer.distrubute_hands(self.player, self.computer_player)
+                self.dealer.distribute_cards(self.player, self.computer_player)
 
                 # 패가 분배되면 플레이어는 패를 확인합니다.
                 # 패는 콘솔창에 출력합니다.
@@ -64,7 +64,7 @@ class Game:
 
                 # 라운드에 승자를 추가합니다.
                 # 라운드 승자와 얻은 금액을 입력합니다.
-                self.hand_view.display_hand(self.computer_player, self.computer_player.get_hands(), front=True)
+                self.view_interface.display_hand(self.computer_player, self.computer_player.get_hand(), front=True)
                 game_round.add_winner(round_winner)
                 # 라운드를 진행된 라운드에 추가하는 것은 라운드가 끝나고 마지막에 합니다.
                 self.rounds.append(game_round)
@@ -79,7 +79,7 @@ class Game:
             self.winner = self.player if Exit.looser == 0 else self.computer_player
         finally:
             # 게임이 끝나면 승자와 최종 승리 금액을 출력합니다.
-            self.winner_view(self.winner.get_id())
+            self.view_interface.display_winner(self.winner.get_id())
     def end_game(self) -> None:
         self.is_game_ended = True
 
