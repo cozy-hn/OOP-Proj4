@@ -1,15 +1,17 @@
 # 게임을 하는 플레이어입니다.
 # 컴퓨터 플레이어 클래스는 플레이어 클래스로부터 파생됩니다.
-from .Hand import Hand
-from .Action import Action
+
+from models.Action import Action
+
 class Player:
-    def __init__(self, player_id: int = 1, initial_bet: int = 10000) -> None:
-        self.__stakes: int = initial_bet
+    def __init__(self, initial_stakes: int = 10000) -> None:
+        self.__stakes: int = initial_stakes
         self.__hand: [int] = []
-        self.__player_id: int = player_id
+        self.__player_id: int = 1
         self.__available_actions = [action for action in Action]
         self.__actions_did_call = [Action(0), Action(1),Action(2)]
         self.__actions_on_first_turn = self.__available_actions[:3]
+
     def get_id(self) -> int:
         return self.__player_id
     def get_stakes(self):
@@ -32,4 +34,4 @@ class Player:
         self.__hand = hand
 
     def get_hand(self) -> list:
-        return dict(self.__hand)
+        return self.__hand

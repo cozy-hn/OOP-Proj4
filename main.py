@@ -1,4 +1,4 @@
-from services import Game
+from services.Game import Game
 
 def main():
     # get user input in loop

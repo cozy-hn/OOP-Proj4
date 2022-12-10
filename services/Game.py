@@ -1,11 +1,11 @@
 import time
 
-from ..models.Player import Player
-from ..models.Dealer import Dealer
-from ..models.AutoPlayer import AutoPlayer
-from .Round import Round
-from ..exceptions.Exit import Exit
-from ..views.ViewInterface import ViewInterface
+from models.Player import Player
+from models.Dealer import Dealer
+from models.AutoPlayer import AutoPlayer
+from services.Round import Round
+from exceptions.Exit import Exit
+from views.ViewInterface import ViewInterface
 
 # 한 게임을 책임지는 클래스입니다.
 class Game:
@@ -30,7 +30,7 @@ class Game:
         # 판돈을 정합니다. -> 라운드마다 처음에 고정인데 -> 베팅을 하면 커진다
         # 예) 1000원 -> 플레이어당 천원씩 깔림
         # 플레이어와 컴퓨터 플레이어를 생성합니다.
-        self.player = self.create_player(10000)
+        self.player = Player(10000)
         self.computer_player = AutoPlayer(10000)
 
         # 게임이 끝나지 않았으면 게임을 계속합니다.

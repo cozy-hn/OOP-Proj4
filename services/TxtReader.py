@@ -10,7 +10,7 @@ class TxtReader:
 
         for i in range(21):
             self.hands[str(i)] = []
-            f = open(f"../src/img/hands/{i}.txt", encoding="UTF8")
+            f = open(f"./src/img/hands/{i}.txt", encoding="UTF8")
             self.__read_file_to_dict(f, self.hands[str(i)])
             f.close()
 
@@ -19,7 +19,7 @@ class TxtReader:
     def read_numbers(self) -> dict:
         for i in range(10):
             self.numbers[str(i)] = []
-            f = open(f"../src/img/numbers/{i}.txt", encoding="UTF8")
+            f = open(f"./src/img/numbers/{i}.txt", encoding="UTF8")
             self.__read_file_to_dict(f, self.numbers[str(i)])
             f.close()
 
@@ -41,7 +41,7 @@ class TxtReader:
         })
 
         for word in self.words.keys():
-            f = open(f"../src/img/words/{word}.txt", encoding="UTF8")
+            f = open(f"./src/img/words/{word}.txt", encoding="UTF8")
             self.__read_file_to_dict(f, self.words[word])
             f.close()
 

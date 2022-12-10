@@ -1,5 +1,5 @@
-from PlayerView import PlayerView
-from WordView import WordView
+from views.PlayerView import PlayerView
+from views.WordView import WordView
 
 POS_WINNER = (25, 1)
 

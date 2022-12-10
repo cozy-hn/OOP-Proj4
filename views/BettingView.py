@@ -1,6 +1,6 @@
-from WordView import WORD_HEIGHT, WordView
-from NumberView import NUM_WIDTH
-from StakeView import StakeView
+from views.WordView import WORD_HEIGHT, WordView
+from views.NumberView import NUM_WIDTH
+from views.StakeView import StakeView
 
 POS_TOTAL_MONEY = (25, 110)
 POS_BETTING_MENU = (1, 129)
