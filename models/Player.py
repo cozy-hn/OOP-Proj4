@@ -1,17 +1,12 @@
 # 게임을 하는 플레이어입니다.
 # 컴퓨터 플레이어 클래스는 플레이어 클래스로부터 파생됩니다.
 from .Hand import Hand
-from enum import Enum
-class Action(Enum):
-    EXIT = 0
-    DIE = 1
-    CALL = 2
-    HALF = 3
+from .Action import Action
 class Player:
     def __init__(self, player_id: int = 1, initial_bet: int = 10000) -> None:
         self.__stakes: int = initial_bet
-        self.__hand: [str] = []
-        self.__player_id: int = id
+        self.__hand: int = -1
+        self.__player_id: int = player_id
         self.__available_actions = [action for action in Action]
         self.__actions_did_call = [Action(0), Action(1),Action(2)]
         self.__actions_on_first_turn = self.__available_actions[:3]
@@ -33,9 +28,8 @@ class Player:
         else:
             return self.__available_actions
 
-    def set_hand(self, hands: [Hand]) -> None:
-        self.hands.clear()
-        self.hands.extend(hands)
+    def set_hand(self, hand: int) -> None:
+        self.__hand = hand
 
     def get_hands(self) -> list:
-        return self.hand
+        return self.__hand
