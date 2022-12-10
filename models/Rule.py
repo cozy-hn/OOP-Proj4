@@ -41,55 +41,49 @@ class Jokbo:
                   26: '두끗', 27: '한끗', 28: '망통'}
         self.jokbo  = ()
 
-    def create_jokbo(self) -> dict:
+#섯다 족보 입니다.
+class Jokbo: 
+
+    def __init__(self) -> None:
+        # 각 번호를 (1,3) 형식으로 뷰 함수 콜할 때 변환해야함
+        self.jokbo_name = {1: '삼팔광땡', 2: '광땡', 3:'장땡', 4:'구땡', 5:'팔땡',
+                  6: '칠땡', 7: '육땡', 8:'오땡', 9:'사땡', 10:'삼땡',
+                  11: '이땡', 12: '일땡', 13:'알리', 14:'독사', 15:'구삥',
+                  16: '장삥', 17: '장사', 18:'세륙', 19:'아홉끗', 20:'여덟끗',
+                  21: '일곱끗', 22: '여섯끗', 23: '다섯끗', 24: '사끗', 25: '삼끗',
+                  26: '두끗', 27: '한끗', 28: '망통'}
+        self.jokbo  = ()
+        
+    def create_jokbo()->dict:
         jokbo = dict()
         jokbo['3,8'] = 1
         jokbo['1,3'] = 2
-        jokbo['1,8'] = 2
-        j = 3
-        temp_index = list()
-        for i in range(1, 11):
-            temp_index.append(i)
-        temp_index = sorted(temp_index, key=lambda x: -x)
-        for i in temp_index:
-            tmp = str(i) + ',' + str(i + 10)
+        jokbo['1,8'] = 2                    
+        j = 3           
+        for i in range(1,11):
+            tmp = str(i) + ',' + str(i+10)
             jokbo[tmp] = j
-            j += 1
-        jokbo['1,2,'] = j
-        j += 1
-        jokbo['1,4,'] = j
-        j += 1
-        jokbo['1,9,'] = j
-        j += 1
-        jokbo['1,10,'] = j
-        j += 1
-        jokbo['4,10,'] = j
-        j += 1
-        jokbo['4,6,'] = j
-        j += 1
-        jokbo['9,,'] = j
-        j += 1
-        jokbo['8,,'] = j
-        j += 1
-        jokbo['7,,'] = j
-        j += 1
-        jokbo['6,,'] = j
-        j += 1
-        jokbo['5,,'] = j
-        j += 1
-        jokbo['4,,'] = j
-        j += 1
-        jokbo['3,,'] = j
-        j += 1
-        jokbo['2,,'] = j
-        j += 1
-        jokbo['1,,'] = j
-        j += 1
-        jokbo['0,,'] = j
-        j += 1
-        jokbo['4,9,'] = j
-        j += 1
-        jokbo['3,7,'] = j
+            j+=1
+        
+        jokbo['1,2,'] = 13
+        jokbo['1,4,'] = 14
+        jokbo['1,9,'] = 15
+        jokbo['1,10,'] = 16
+        jokbo['4,10,'] = 17
+        jokbo['4,6,'] = 18
+        jokbo['9,,'] = 19
+        jokbo['8,,'] = 20
+        jokbo['7,,'] = 21
+        jokbo['6,,'] = 22
+        jokbo['5,,'] = 23
+        jokbo['4,,'] = 24
+        jokbo['3,,'] = 25
+        jokbo['2,,'] = 26
+        jokbo['1,,'] = 27
+        jokbo['0,,'] = 28
+        jokbo['4,9,'] = 30
+        jokbo['3,7,'] = 31
+
         return jokbo
 
     @staticmethod
