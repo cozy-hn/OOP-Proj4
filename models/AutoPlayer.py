@@ -1,28 +1,29 @@
-# 컴퓨터 플레이어입니다. 플레이어로부터 파생됩니다. 
+# The computer player class is derived from the player class.
 from models.Player import Player
 from random import randrange
 from models.Action import Action
 
-# 컴퓨터 플레이어가 자동으로 폴드, 벳을하게 해야하는데 이 로직을 정해야합니다.
+
 class AutoPlayer(Player):
     def __init__(self, initial_stakes: int = 10000) -> None:
         Player.__init__(self, initial_stakes)
-        self.__player_id = 1
+        self.__player_id = 0
 
     def __decide_bet(self) -> int:
-        # 특정 로직에 의해 컴퓨터 플레이어가 베팅할 금액을 정합니다.
-        return 100
+        return int(100)
 
     def auto_action(self) -> Action:
+        # The specific logic determines which batting method
+        #Create a random number from 1 to 100, which determines HALF, CALL, and DIE.
         rannum=randrange(1,100)
-        if self.__hand in [1]:#삼팔 광땡
+        if self.__hand in [1]:
             if rannum in [i for i in range(1,2)]:
                 return Action.DIE
             elif rannum in [i for i in range(2,4)]:
                 return Action.CALL
             else:
                 return Action.HALF
-        elif self.__hand in [2,3]:#다른 광땡
+        elif self.__hand in [2,3]:
             if rannum in [i for i in range(1,4)]:
                 return Action.DIE
             elif rannum in [i for i in range(4,7)]:
@@ -71,7 +72,3 @@ class AutoPlayer(Player):
                 return Action.CALL
             else:
                 return Action.HALF
-
-
-    def get_id(self):
-        return self.__player_id
