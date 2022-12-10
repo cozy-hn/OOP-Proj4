@@ -65,7 +65,7 @@ class AutoPlayer(Player):
                 return Action.CALL
             else:
                 return Action.HALF
-        else: #망통
+        else:
             if rannum in [i for i in range(1,71)]:
                 return Action.DIE
             elif rannum in [i for i in range(71,96)]:
